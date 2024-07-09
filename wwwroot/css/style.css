@@ -23,89 +23,113 @@ header
 
 .crearCuestionario
 {    
-    main 
+    min-height: 100%;
+    display: flex;
+    gap: 0px;
+
+
+    .sidebar 
     {
-        display: flex;
-        gap: 0px;
-        height: inherit;
-        .sidebar 
+        width: 20%;
+        background-color: #1a2c67;
+
+        .imagenCrearCuestionario 
         {
-            width: 20%;
-            background-color: #1a2c67;
-    
-            .imagenCrearCuestionario 
-            {
-                background-image: url('./../image/contact-form.png');
-                background-repeat: no-repeat;
-                background-size: cover;
-                width: 40px;
-                height: 40px;
-            }
-    
-            .imagenVerCuestionario 
-            {
-                background-image: url('./../image/google-forms.png');
-                background-repeat: no-repeat;
-                background-size: cover;
-                width: 40px;
-                height: 40px;
-            }
+            background-image: url('./../image/contact-form.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 40px;
+            height: 40px;
         }
-        
-        .proceso {
-            width: 100%;
-            background-color: rgba(82, 82, 82, 0.1);
+
+        .imagenVerCuestionario 
+        {
+            background-image: url('./../image/google-forms.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 40px;
+            height: 40px;
+        }
+    }
     
-            #asignarNombre {
-                margin:15px;
-            }
+    .proceso {
+        width: 100%;
+        background-color: rgba(82, 82, 82, 0.1);
+
+        #asignarNombre {
+            margin:15px;
+        }
+
+        
+        .proceso_form {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
 
             #TemaCuestionario 
             {
                 border: none;
-                background-color: #e9e9e91a;
+                background-color: rgba(227, 225, 225, 0.2);
                 font-weight: lighter;
                 padding: 5px;
             }
 
 
-            .proceso_form {
+            .tema {
+                background-color: rgba(185, 185, 185, 0.2);
+                border-radius: 4px;
+                width: 50%;
+                margin: 0 auto 15px auto;
+            }
+
+            .formulario {
+                width: 70%;
+                margin: 0 auto;
+                background-color: rgb(255, 255, 255);
                 padding: 10px;
+                border-radius: 10px;
+
+            }
+
+            .tabla {
+                margin-top: 20px;
+            }
+
+            .ajustar-tabla  
+            {
                 display: flex;
+                gap: 20px;
                 flex-direction: column;
-                border-radius: 5px;
-    
-                .formulario {
-                    width: 70%;
-                    margin: 0 auto;
-                    background-color: rgb(255, 255, 255);
-                    padding: 10px;
-                    border-radius: 10px;
+        
+                .campo-pregunta,
+                .campo-respuestas {
+                    width: 100%;
                 }
-    
-                .tabla {
-                    margin-top: 20px;
-                }
-    
-                .ajustar-tabla  
-                {
-                    display: flex;
-                    gap: 20px;
-                    flex-direction: column;
-            
-                    .campo-pregunta,
-                    .campo-respuestas {
-                        width: 100%;
-                    }
-    
-                    .campo-respuestas {
-                        vertical-align: middle;
+
+                .campo-respuestas {
+                    vertical-align: middle;
+
+                    .campo_seccion {
+                        position: relative;
+                        
+                        #botonEliminarRespuesta
+                        {
+                            border:none;
+                            margin:0;
+                            padding:0;
+                            width: 0;
+                            position: absolute;
+                            top:0;
+                            right: 3%;
+                        }
                     }
                 }
             }
-
         }
+
     }
+
 }
 
 

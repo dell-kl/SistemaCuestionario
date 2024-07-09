@@ -1,7 +1,7 @@
 <?php include_once __DIR__ . './../template/header.php'; ?>
         
         <div class="crearCuestionario">
-            <main>
+            
             <?php include_once __DIR__ . './../template/sidebar.php'; ?>
                 <div class="proceso">
                     <button type="button" id="asignarNombre" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -11,9 +11,9 @@
     
                     <form method="POST" action="?accion=registrarCuestionario">
                         <div class="mt-4 proceso_form">
-                            <h2 class="fs-5 text-center p-2">Tema Cuestionario: <span class="fw-light fs-5" id="nombreTema"><input id="TemaCuestionario" type="text" name="NTemaCuestionario" value="Sin Tema"></span></h2>
+                            <h2 class="fs-5 text-center p-2 tema">Tema Cuestionario: <span class="fw-light fs-5" id="nombreTema"><input id="TemaCuestionario" type="text" name="NTemaCuestionario" value="Sin Tema"></span></h2>
                             
-                            <div class="botonFinalizar m-auto">        
+                            <div class="botonFinalizar m-auto pb-3">        
                                 <button type="button" id="agregarPregunta" class="btn btn-warning mt-2 d-inline mb-2">
                                     <i class="bi bi-plus-circle-fill"></i>
                                     Agregar Pregunta
@@ -29,7 +29,7 @@
                                 <div class="pregunta_seccion">
                                     <div class="acciones d-flex align-items-center justify-content-between">
                                         <div>
-                                            <button type="button" id="agregarRespuesta-1" class="btn btn-primary mt-2 d-inline mb-2">
+                                            <button type="button" id="agregarRespuesta-1" class="btn btn-primary mt-2 d-inline mb-2 botonAgregarRespuesta">
                                                 <i class="bi bi-plus-circle-fill"></i>
                                                 Agregar Respuesta
                                             </button>
@@ -43,7 +43,10 @@
                                         <div class="campo-respuestas agregarRespuesta-1">
                                             <div class="campo">
                                                 <label for="respuesta1" class="fw-light pb-2">Ingresa tu respuesta</label>
-                                                <input type="text" id="respuesta1" name="pregunta_1_respuesta" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
+                                                <div class="campo_seccion">
+                                                    <input type="text" id="respuesta1" name="pregunta_1_respuesta" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
+                                                    <button type="button" id="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -52,7 +55,7 @@
                         </div>
                     </form>
                 </div>
-            </main>
+           
         </div>
     </div>
 

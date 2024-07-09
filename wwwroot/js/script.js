@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 function app()
 {
     validarFormularioTemaCuestionario();
-    verificarAgregarRespuesta();
     verificarAgregarPregunta();  
+    verificarAgregarRespuesta(document.querySelectorAll(".formulario .pregunta_seccion .botonAgregarRespuesta"));
 }
 
 function validarFormularioTemaCuestionario()
@@ -51,23 +51,24 @@ function mostrarMensajeAlerta(mensaje, mensajeCampo, mostrar = false)
     }
 }
 
-function verificarAgregarRespuesta()
+function verificarAgregarRespuesta(botones)
 {
-    let botones = document.querySelectorAll(".formulario .pregunta_seccion button[type=button]");
     botones.forEach(boton => {
        boton.addEventListener("click", (e) => {
             let contenedorRespuestas = document.getElementsByClassName(e.target.id)[0];
-            
             let nRespuesta = (document.querySelectorAll(".pregunta_seccion").length + 1);
 
             let campo = document.createElement("DIV");
             campo.classList.add("campo");
             campo.innerHTML = `
                 <label for="respuesta${nRespuesta}" class="fw-light pb-2 pt-2">Ingresa tu respuesta</label>
-                <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta" class="form-control" placeholder="Ingresa la respuesta para la pregunta">    
+                <div class="campo_seccion">
+                    <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta" class="form-control" placeholder="Ingresa la respuesta para la pregunta">    
+                    <button type="button" id="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                </div>
             `;
 
-            contenedorRespuestas.appendChild(campo);
+            //contenedorRespuestas.appendChild(campo);
         });
     });
 }
@@ -86,11 +87,10 @@ function verificarAgregarPregunta()
             campo.innerHTML = `
                 <div class="acciones d-flex align-items-center justify-content-between">
                     <div>
-                        <button type="button" id="agregarRespuesta-${nRespuesta}" class="btn btn-primary mt-2 d-inline mb-2">
+                        <button type="button" id="agregarRespuesta-${nRespuesta}" class="btn btn-primary mt-2 d-inline mb-2 botonAgregarRespuesta">
                             <i class="bi bi-plus-circle-fill"></i>
                             Agregar Respuesta
                         </button>
-                        
                     </div>
                 </div>
                 <div class="tabla ajustar-tabla">
@@ -101,15 +101,17 @@ function verificarAgregarPregunta()
                     <div class="campo-respuestas agregarRespuesta-${nRespuesta}">
                         <div class="campo">
                             <label for="respuesta${nRespuesta}" class="fw-light pb-2">Ingresa tu respuesta</label>
-                            <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
+                            <div class="campo_seccion">
+                                <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
+                                <button type="button" id="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
 
             contenedorRespuestas.appendChild(campo);
-
-            verificarAgregarRespuesta();
+            verificarAgregarRespuesta(document.querySelectorAll(".formulario .pregunta_seccion .botonAgregarRespuesta"));
     });
 }
 

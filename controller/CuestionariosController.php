@@ -40,10 +40,16 @@
 
         public function obtenerInformacionCuestionarios()
         {
-            $sql = "SELECT tipoCues_id, tipoCues_tema, preguntasCues_id, preguntasCues_nombre, respuestasCues_id, respuestasCues_nombre FROM TipoCuestionario AS TC INNER JOIN PreguntasCues AS PC ON TC.tipoCues_id = PC.preguntasTipoCues INNER JOIN RespuestasCues AS RC ON PC.preguntasCues_id = RC.preguntasCues";
-            $conexion = $this->conn->prepare($sql);
-            $conexion->execute();
-            $resultado = $conexion->fetchAll();
+            try {
+                //code...
+                $sql = "SELECT tipoCues_id, tipoCues_tema, preguntasCues_id, preguntasCues_nombre, respuestasCues_id, respuestasCues_nombre FROM TipoCuestionario AS TC INNER JOIN PreguntasCues AS PC ON TC.tipoCues_id = PC.preguntasTipoCues INNER JOIN RespuestasCues AS RC ON PC.preguntasCues_id = RC.preguntasCues";
+                $conexion = $this->conn->prepare($sql);
+                $conexion->execute();
+                $resultado = $conexion->fetchAll();
+            } catch (\Throwable $th) {
+                //throw $th;
+                header("Location: ?accion=generarCuestionario&estado=error");
+            }
 
             $registro = [];
             foreach($resultado as $res)

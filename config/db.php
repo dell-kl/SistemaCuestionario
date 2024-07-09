@@ -1,11 +1,11 @@
 <?php
 
 $server = "localhost";
-$username = "root";
-$password = "";
+$username = "dennis";
+$password = "dennis";
 $db = "CuestionarioDB";
 
-$conexion = new PDO("mysql:host=$server;dbname=$db", $username, $password);
+$conexion = new PDO("mysql:dbname=$db", $username, $password);
 $conexion->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
 
 ?>
