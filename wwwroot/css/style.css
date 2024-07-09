@@ -113,7 +113,7 @@ header
                     .campo_seccion {
                         position: relative;
                         
-                        #botonEliminarRespuesta
+                        .botonEliminarRespuesta
                         {
                             border:none;
                             margin:0;

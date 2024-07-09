@@ -41,11 +41,11 @@
                                             <input type="text" id="pregunta" name="pregunta_1" class="form-control" placeholder="Ingresa primera pregunta para el cuestionario">
                                         </div>
                                         <div class="campo-respuestas agregarRespuesta-1">
-                                            <div class="campo">
+                                            <div class="campo campo_eIEaAEaAUuIOiUoAAEaiUuAIoIiuoa">
                                                 <label for="respuesta1" class="fw-light pb-2">Ingresa tu respuesta</label>
                                                 <div class="campo_seccion">
-                                                    <input type="text" id="respuesta1" name="pregunta_1_respuesta" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
-                                                    <button type="button" id="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                                                    <input type="text" id="respuesta1" name="pregunta_1_respuesta_00001" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
+                                                    <button value="campo_eIEaAEaAUuIOiUoAAEaiUuAIoIiuoa" type="button" class="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
                                                 </div>
                                             </div>
                                         </div>

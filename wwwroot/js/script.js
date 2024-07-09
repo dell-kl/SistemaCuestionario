@@ -1,3 +1,5 @@
+let codigo = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', '0', '1', '2', '3', '4', '5'];
+
 document.addEventListener("DOMContentLoaded", (e) => {
     app();
 });
@@ -6,7 +8,8 @@ function app()
 {
     validarFormularioTemaCuestionario();
     verificarAgregarPregunta();  
-    verificarAgregarRespuesta(document.querySelectorAll(".formulario .pregunta_seccion .botonAgregarRespuesta"));
+    verificarAgregarRespuesta();
+    verificarEliminarRespuesta();
 }
 
 function validarFormularioTemaCuestionario()
@@ -35,6 +38,17 @@ function validarFormularioTemaCuestionario()
 }
 
 
+function generarCodigoAleatorio()
+{
+    let c = "";
+    for( let i = 0; i < 30; i++)
+    {
+        let numero = Math.floor(Math.random() * 10);	
+        c+=codigo[numero];
+    }
+    return c;
+}
+
 function mostrarMensajeAlerta(mensaje, mensajeCampo, mostrar = false)
 {
     if ( !mostrar )
@@ -51,25 +65,47 @@ function mostrarMensajeAlerta(mensaje, mensajeCampo, mostrar = false)
     }
 }
 
-function verificarAgregarRespuesta(botones)
+function verificarEliminarRespuesta()
 {
+    let botonEliminar = document.querySelectorAll(".botonEliminarRespuesta");
+    botonEliminar.forEach(btn => {
+        btn.onclick = (e) => {
+            let codigoCampo = e.target.parentNode.value;
+            let nodeCampo = document.getElementsByClassName(codigoCampo)[0];
+            nodeCampo.remove();
+            verificarAgregarRespuesta();
+        };
+    });
+}
+
+function verificarAgregarRespuesta()
+{
+    let botones = document.querySelectorAll(".formulario .pregunta_seccion .botonAgregarRespuesta");
+
     botones.forEach(boton => {
-       boton.addEventListener("click", (e) => {
+
+        boton.onclick = (e) => {
             let contenedorRespuestas = document.getElementsByClassName(e.target.id)[0];
-            let nRespuesta = (document.querySelectorAll(".pregunta_seccion").length + 1);
+
+            let nRespuesta = (document.querySelectorAll(".pregunta_seccion").length);
+
+            let codigoAleatorio = generarCodigoAleatorio();
 
             let campo = document.createElement("DIV");
-            campo.classList.add("campo");
+            campo.classList.add("campo", `campo_${codigoAleatorio}`);
             campo.innerHTML = `
                 <label for="respuesta${nRespuesta}" class="fw-light pb-2 pt-2">Ingresa tu respuesta</label>
                 <div class="campo_seccion">
-                    <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta" class="form-control" placeholder="Ingresa la respuesta para la pregunta">    
-                    <button type="button" id="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                    <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta_${codigoAleatorio}" class="form-control" placeholder="Ingresa la respuesta para la pregunta">    
+                    <button type="button" value="campo_${codigoAleatorio}" class="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
                 </div>
             `;
 
-            //contenedorRespuestas.appendChild(campo);
-        });
+            contenedorRespuestas.appendChild(campo);
+            verificarEliminarRespuesta();
+        }
+
+       
     });
 }
 
@@ -77,10 +113,10 @@ function verificarAgregarPregunta()
 {
     document.getElementById("agregarPregunta")
         .addEventListener("click", (e) => {
-           
             let contenedorRespuestas = document.getElementsByClassName("formulario")[0];
 
             let nRespuesta = (document.querySelectorAll(".pregunta_seccion").length + 1);
+            let codigoAleatorio = generarCodigoAleatorio();
 
             let campo = document.createElement("DIV");
             campo.classList.add("pregunta_seccion", "pt-2");
@@ -99,11 +135,11 @@ function verificarAgregarPregunta()
                         <input type="text" id="pregunta${nRespuesta}" name="pregunta_${nRespuesta}" class="form-control" placeholder="Ingresa primera pregunta para el cuestionario">
                     </div>
                     <div class="campo-respuestas agregarRespuesta-${nRespuesta}">
-                        <div class="campo">
+                        <div class="campo campo_${codigoAleatorio}">
                             <label for="respuesta${nRespuesta}" class="fw-light pb-2">Ingresa tu respuesta</label>
                             <div class="campo_seccion">
-                                <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
-                                <button type="button" id="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                                <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta_00001" class="form-control respuesta respuesta_00001" placeholder="Ingresa la respuesta para la pregunta">                        
+                                <button type="button" value="campo_${codigoAleatorio}" class="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
                             </div>
                         </div>
                     </div>
@@ -111,7 +147,8 @@ function verificarAgregarPregunta()
             `;
 
             contenedorRespuestas.appendChild(campo);
-            verificarAgregarRespuesta(document.querySelectorAll(".formulario .pregunta_seccion .botonAgregarRespuesta"));
+            verificarAgregarRespuesta();
+            verificarEliminarRespuesta();
     });
 }
 
