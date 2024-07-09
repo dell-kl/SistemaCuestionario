@@ -1,0 +1,138 @@
+body 
+{
+    font-family: "Roboto", sans-serif;
+}
+
+.contenido {
+    height: 100vh;
+}
+
+
+header 
+{
+    background-color: #071952;
+
+    .icono {
+        background-image: url('./../image/quizzes.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 70px;
+        height: 70px;
+    }
+}
+
+.crearCuestionario
+{    
+    main 
+    {
+        display: flex;
+        gap: 0px;
+        height: inherit;
+        .sidebar 
+        {
+            width: 20%;
+            background-color: #1a2c67;
+    
+            .imagenCrearCuestionario 
+            {
+                background-image: url('./../image/contact-form.png');
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 40px;
+                height: 40px;
+            }
+    
+            .imagenVerCuestionario 
+            {
+                background-image: url('./../image/google-forms.png');
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
+        .proceso {
+            width: 100%;
+            background-color: rgba(82, 82, 82, 0.1);
+    
+            #asignarNombre {
+                margin:15px;
+            }
+
+            #TemaCuestionario 
+            {
+                border: none;
+                background-color: #e9e9e91a;
+                font-weight: lighter;
+                padding: 5px;
+            }
+
+
+            .proceso_form {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                border-radius: 5px;
+    
+                .formulario {
+                    width: 70%;
+                    margin: 0 auto;
+                    background-color: rgb(255, 255, 255);
+                    padding: 10px;
+                    border-radius: 10px;
+                }
+    
+                .tabla {
+                    margin-top: 20px;
+                }
+    
+                .ajustar-tabla  
+                {
+                    display: flex;
+                    gap: 20px;
+                    flex-direction: column;
+            
+                    .campo-pregunta,
+                    .campo-respuestas {
+                        width: 100%;
+                    }
+    
+                    .campo-respuestas {
+                        vertical-align: middle;
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
+#descripcionTema 
+{
+    border:1px solid rgba( 0 0 0 / .2);
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 10px;
+}
+
+.mensajeError {
+    background-color: rgba(255 0 0 / .2);
+    color: rgb(255, 0, 0);
+    margin: 0 0 0 10px;
+    border-radius: 5px;
+    display: block;
+    padding: 0 0 3px 5px;
+    font-weight: bold;
+}
+
+.mensajeError::before {
+    content: "⚠️";
+    padding-right: 5px;
+    font-size: 25px;
+}
+
+.ocultarMensaje {
+    display: none;
+}

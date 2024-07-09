@@ -1,0 +1,12 @@
+.cuestionarios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:10px;
+    margin:10px;
+    
+    .cuestionario {
+        background-color: rgba( 0 0 0 / .2);
+        border-radius: 4px;
+        padding: 2px 0px 0px 3px;
+    }
+}
