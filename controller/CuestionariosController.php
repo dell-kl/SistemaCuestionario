@@ -1,5 +1,6 @@
 <?php
     require_once("./model/RespuestasCues.php");
+    require_once("./model/PreguntasCues.php");
     require_once("./model/CuestionarioFinal.php");
 
     class CuestionariosController
@@ -19,6 +20,7 @@
             $resultado = $conexion->fetchAll();
 
             $dataCuestionarios = $this->obtenerInformacionCuestionarios();
+            
 
             require_once("./views/VistaOpciones.php");
         }
@@ -42,7 +44,7 @@
         {
             try {
                 //code...
-                $sql = "SELECT tipoCues_id, tipoCues_tema, preguntasCues_id, preguntasCues_nombre, respuestasCues_id, respuestasCues_nombre FROM TipoCuestionario AS TC INNER JOIN PreguntasCues AS PC ON TC.tipoCues_id = PC.preguntasTipoCues INNER JOIN RespuestasCues AS RC ON PC.preguntasCues_id = RC.preguntasCues";
+                $sql = "SELECT tipoCues_id, tipoCues_tema, preguntasCues_id, preguntasCues_nombre, respuestasCues_id, respuestasCues_nombre, preguntasCues FROM TipoCuestionario AS TC INNER JOIN PreguntasCues AS PC ON TC.tipoCues_id = PC.preguntasTipoCues INNER JOIN RespuestasCues AS RC ON PC.preguntasCues_id = RC.preguntasCues";
                 $conexion = $this->conn->prepare($sql);
                 $conexion->execute();
                 $resultado = $conexion->fetchAll();
@@ -51,24 +53,47 @@
                 header("Location: ?accion=generarCuestionario&estado=error");
             }
 
-            $registro = [];
+            $cuest = new CuestionarioFinal(
+                $resultado[0]["tipoCues_id"],
+                $resultado[0]["tipoCues_tema"],
+                [],
+                []
+            );
+
             foreach($resultado as $res)
             {
-                $cuest = new CuestionarioFinal(
-                    $res["tipoCues_id"],
-                    $res["tipoCues_tema"],
+                $pregunta = new PreguntasCues(
                     $res["preguntasCues_id"],
                     $res["preguntasCues_nombre"],
-                    new RespuestasCues(
-                        $res["respuestasCues_id"],
-                        $res["respuestasCues_nombre"],
-                        0,
-                    )
+                    $res["tipoCues_id"]
                 );
-                $registro[] = $cuest;
+
+                if (  count($cuest->preguntasCues) === 0 )
+                {
+                    $cuest->preguntasCues[] = $pregunta;
+                }
+                else 
+                {
+                    $arg = array_column($cuest->preguntasCues, "preguntasCues_id" );
+                    $nIndice = $arg[count($arg)-1];
+                   
+                    if ( !( $nIndice === $pregunta->preguntasCues_id ) )
+                    {
+                        // var_dump($pregunta->preguntasCues_nombre);
+                        $cuest->preguntasCues[] = $pregunta;
+                    }
+                }
+
+                $cuest->respuestas[] = new RespuestasCues(
+                    $res["respuestasCues_id"],
+                    $res["respuestasCues_nombre"],
+                    $res["preguntasCues"]
+                );
             }
 
-            return $registro;
+
+
+            return $cuest;
         }
     }
 ?>

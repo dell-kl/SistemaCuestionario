@@ -11,7 +11,7 @@
     
                     <form method="POST" action="?accion=registrarCuestionario">
                         <div class="mt-4 proceso_form">
-                            <h2 class="fs-5 text-center p-2 tema">Tema Cuestionario: <span class="fw-light fs-5" id="nombreTema"><input id="TemaCuestionario" type="text" name="NTemaCuestionario" value="Sin Tema"></span></h2>
+                            <h2 class="fs-5 text-center p-2 tema d-flex flex-column">Tema Cuestionario<span class="fw-light fs-5" id="nombreTema"><input id="TemaCuestionario" type="text" name="NTemaCuestionario" class="text-center pt-3" value="No hay tema todavia..."></span></h2>
                             
                             <div class="botonFinalizar m-auto pb-3">        
                                 <button type="button" id="agregarPregunta" class="btn btn-warning mt-2 d-inline mb-2">

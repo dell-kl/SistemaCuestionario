@@ -50,18 +50,23 @@
                         }
                     }, ARRAY_FILTER_USE_BOTH);
 
-                    
-                    foreach($listadoNuevo as $key=>$valor)
+                    //registramos solo por una vez a nuestro tema del cuestionario....
+                    $cuestionarioController->RegistrarTema($_POST["NTemaCuestionario"]);
+                    $idTema = $cuestionarioController->ObtenerUltimoIdTema();
+
+                    foreach($listadoNuevo as $keyp=>$valorp)
                     {
                         $listadoPreguntas = array_filter($_POST, function($valor, $key) {
+                            global $keyp;
 
-                            if ( preg_match("/^$key/", $key) )
+                            if ( preg_match("/^$keyp(_respuesta)/", $key) )
                             {
                                 return $valor;
                             }
                         },ARRAY_FILTER_USE_BOTH);
 
-                        $cuestionarioController->RegistrarCuestionario($_POST["NTemaCuestionario"], $valor, $listadoPreguntas);
+                        //con este codigo vamos a registrar en la base de datos las respuestas y las preguntas...
+                        $cuestionarioController->RegistrarCuestionario($idTema, $valorp, $listadoPreguntas);
                     }
                 }
 

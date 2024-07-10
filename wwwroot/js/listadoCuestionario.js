@@ -1,24 +1,15 @@
 document.addEventListener("DOMContentLoaded", (e) => {
-    // app2();
+    opciones();
 });
 
-function app2()
+function opciones()
 {
-    
+    VerificarVistaPrevia();
 }
 
-
-function VerificarUrl(estado = false)
+function VerificarVistaPrevia()
 {
-    
-    // if ( !estado )
-    // {
-    //     if ( window.location.search.indexOf("id") !== -1)
-    //     {
-    //         let e = document.getElementById("botonVerEdit");
-    //         e.click();    
-    //         VerificarUrl(true);
-    //     }
-    // }
+    let botonEditar = document.querySelectorAll("#botonVerEdit");
 
 }
+
