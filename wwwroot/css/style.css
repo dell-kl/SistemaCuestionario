@@ -121,9 +121,20 @@ header
                             width: 0;
                             position: absolute;
                             top:0;
-                            right: 3%;
+                            right: 0%;
+                            z-index: 2;
+                        }
+                        .switch_encenderRespuestaCorrecta {
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            right: 0%;
+                            font-size: 21px;
+                            padding-top: 5px;
+                            width: 7rem;
                         }
                     }
+
                 }
             }
         }

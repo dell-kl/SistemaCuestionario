@@ -45,7 +45,10 @@
                                                 <label for="respuesta1" class="fw-light pb-2">Ingresa tu respuesta</label>
                                                 <div class="campo_seccion">
                                                     <input type="text" id="respuesta1" name="pregunta_1_respuesta_00001" class="form-control respuesta" placeholder="Ingresa la respuesta para la pregunta">                        
-                                                    <button value="campo_eIEaAEaAUuIOiUoAAEaiUuAIoIiuoa" type="button" class="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                                                    <button value="campo_eIEaAEaAUuIOiUoAAEaiUuAIoIiuoa" type="button" class="botonEliminarRespuesta me-5"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                                                    <div class="form-check form-switch switch_encenderRespuestaCorrecta">
+                                                        <input class="form-check-input" name="pregunta_1_respuesta_00001_correcta" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked="false">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

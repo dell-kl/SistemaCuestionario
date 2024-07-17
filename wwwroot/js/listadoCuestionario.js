@@ -4,12 +4,25 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 function opciones()
 {
-    VerificarVistaPrevia();
+    let comprobar = window.location.search.indexOf("opciones");
+    let formulario = window.location.search.indexOf("id");
+
+    if ( comprobar !== -1 && formulario !== -1)
+    {
+        ModalFormulario();
+    }
 }
 
-function VerificarVistaPrevia()
+function ModalFormulario()
 {
-    let botonEditar = document.querySelectorAll("#botonVerEdit");
+    let botonCancelar = document.getElementById("CerrarFormularioFinal");
+    botonCancelar.onclick = () => { window.location.href = `${window.location.origin}${window.location.pathname}?accion=opciones&estado=false`; };
 
+    let botonGuardarCambios = document.getElementsByClassName("btn-guardarCambiosFormulario")[0];
+    botonGuardarCambios.onclick = () => {
+        //le damos click al btn del formulario para poder enviar los cambios correspondientes
+        //estos cambios iran a nuestro apartado del /accion=actualizarFormulario
+        document.getElementById('btn-formularioFinal').click();
+    };
 }
 

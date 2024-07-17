@@ -6,10 +6,17 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 function app()
 {
-    validarFormularioTemaCuestionario();
+    let comprobar = window.location.search.indexOf("generarCuestionario");
+
+    if ( comprobar !== -1 )
+    {
+        validarFormularioTemaCuestionario();
+    }
+
     verificarAgregarPregunta();  
     verificarAgregarRespuesta();
     verificarEliminarRespuesta();
+
 }
 
 function validarFormularioTemaCuestionario()
@@ -85,7 +92,10 @@ function verificarAgregarRespuesta()
     botones.forEach(boton => {
 
         boton.onclick = (e) => {
+
             let contenedorRespuestas = document.getElementsByClassName(e.target.id)[0];
+
+            console.log(contenedorRespuestas);
 
             let nRespuesta = (document.querySelectorAll(".pregunta_seccion").length);
 
@@ -97,7 +107,10 @@ function verificarAgregarRespuesta()
                 <label for="respuesta${nRespuesta}" class="fw-light pb-2 pt-2">Ingresa tu respuesta</label>
                 <div class="campo_seccion">
                     <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta_${codigoAleatorio}" class="form-control" placeholder="Ingresa la respuesta para la pregunta">    
-                    <button type="button" value="campo_${codigoAleatorio}" class="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                    <button type="button" value="campo_${codigoAleatorio}" class="botonEliminarRespuesta me-5"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                    <div class="form-check form-switch switch_encenderRespuestaCorrecta">
+                        <input class="form-check-input" name="pregunta_${nRespuesta}_respuesta_${codigoAleatorio}_correcta" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                    </div>
                 </div>
             `;
 
@@ -105,7 +118,6 @@ function verificarAgregarRespuesta()
             verificarEliminarRespuesta();
         }
 
-       
     });
 }
 
@@ -139,7 +151,10 @@ function verificarAgregarPregunta()
                             <label for="respuesta${nRespuesta}" class="fw-light pb-2">Ingresa tu respuesta</label>
                             <div class="campo_seccion">
                                 <input type="text" id="respuesta${nRespuesta}" name="pregunta_${nRespuesta}_respuesta_00001" class="form-control respuesta respuesta_00001" placeholder="Ingresa la respuesta para la pregunta">                        
-                                <button type="button" value="campo_${codigoAleatorio}" class="botonEliminarRespuesta"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                                <button type="button" value="campo_${codigoAleatorio}" class="botonEliminarRespuesta me-5"><i style="font-size:25px;color:red;" class="bi bi-x-circle-fill"></i></button>
+                                <div class="form-check form-switch switch_encenderRespuestaCorrecta">
+                                    <input class="form-check-input" name="pregunta_${nRespuesta}_respuesta_00001_correcta" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                                </div>
                             </div>
                         </div>
                     </div>

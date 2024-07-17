@@ -10,7 +10,7 @@
             $this->conn = $conexion;
         }
 
-        public function RegistrarCuestionario($id, $pregunta, array $respuestas)
+        public function RegistrarCuestionario($id, $pregunta, array $respuestas, $r_correcto)
         {
             try {             
                 $resultado = $this->RegistrarPreguntaCues($pregunta, $id);
@@ -18,16 +18,14 @@
                 if ( $resultado )
                 {
                     $idPregunta = $this->ObtenerUltimoIdPregunta();
-    
-    
-                    $resultado = $this->RegsitrarRespuestaCues($idPregunta, $respuestas);
+                   
+                    $resultado = $this->RegsitrarRespuestaCues($idPregunta, $respuestas, $r_correcto);
     
                     if( $resultado )
                     {
                         header("Location: ?accion=opciones");
                         return;
-                    }    
-                        
+                    } 
                 }
 
                 header("Location: ?accion=generarCuestionario");
@@ -45,7 +43,7 @@
             $consulta->execute();
         }
 
-        public function ObtenerUltimoIdTema()
+        public function ObtenerUltimoIdTema()   
         {
             $sql = "SELECT tipoCues_id FROM TipoCuestionario ORDER BY tipoCues_id DESC LIMIT 1";
             $consulta = $this->conn->prepare($sql);
@@ -84,35 +82,48 @@
             }
         }
 
-        public function RegsitrarRespuestaCues($id, array $res)
+        public function RegsitrarRespuestaCues($id, array $res, $r_correcto)
         {
             try {
                 //code...
-                $sql = "INSERT INTO RespuestasCues( respuestasCues_nombre, preguntasCues)";
+                $sql = "INSERT INTO RespuestasCues( respuestasCues_nombre, preguntasCues, respuestasCues_correcta)";
                 
                 $i = 0;
                 $valores = [];
                 $params = [];
-                foreach($res as $r)
+                
+                foreach($res as $r=>$v)
                 {
-                    $value = "";
-                    if($i === 0)
+                    if( !preg_match("/_correcta$/", $r) )
                     {
-                        $value = " VALUES( ?, ? ) ";
-                        $i+=1;
+                        
+                        $value = "";
+                        if($i === 0)
+                        {
+                            $value = " VALUES( ?, ?, ? ) ";
+                            $i+=1;
+                        }
+                        else 
+                        {
+                            $value = " ( ?, ?, ? ) "; 
+                        }
+
+                        $valores[] = $value;
+                        $params[] = $v;
+                        $params[] = $id;
+                        $params[] = 0;
+
+                        if ( $r === $r_correcto )
+                        {
+                            $params[2] = 1;
+                        }
+                        
                     }
-                    else 
-                    {
-                        $value = " ( ?, ? ) "; 
-                    }
-    
-                    $valores[] = $value;
-                    $params[] = $r;
-                    $params[] = $id;
                 }
-    
+                
                 $sql .= implode(",", $valores);
                 $consulta = $this->conn->prepare($sql);
+               
                 $consulta->execute($params);
 
                 return true;
