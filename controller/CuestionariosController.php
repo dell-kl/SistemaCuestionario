@@ -25,6 +25,18 @@
             require_once("./views/VistaOpciones.php");
         }
 
+
+        public function obtenerDatosCuestionarios()
+        {
+            $sql = "SELECT tipoCues_id, tipoCues_tema FROM TipoCuestionario";
+            $conexion = $this->conn->prepare($sql);
+            $conexion->execute();
+            $resultado = $conexion->fetchAll();
+
+            return $resultado;
+        }
+
+
         public function eliminarCuestionario($id)
         {
             $sql = "DELETE FROM TipoCuestionario WHERE tipoCues_id = ?";

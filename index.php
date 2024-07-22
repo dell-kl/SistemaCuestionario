@@ -1,20 +1,25 @@
 <?php
     require_once("./config/db.php");
     require_once("./model/Usuario.php");
+    require_once("./model/AsignacionCuestionarioFinal.php");
     require_once("./controller/FormularioController.php");
     require_once("./controller/GenerarCuestionarioController.php");
     require_once("./controller/CuestionariosController.php");
     require_once("./controller/InicioSesionController.php");
     require_once("./controller/UsuariosController.php");
+    require_once("./controller/AsignacionCuestionarioController.php");
     require_once("./tools/toolsFunc.php");
     require_once("./tools/gestionarCues.php");
+    require_once("./tools/gestionarAsign.php");
 
     $formularioController = new FormularioController($conexion);
     $cuestionarioController = new GenerarCuestionarioController($conexion);
     $CuesController = new CuestionariosController($conexion);
     $loginController = new InicioSesionController($conexion);
     $usuariosController = new UsuariosController($conexion);
+    $asignacionCuestionarioController = new AsignacionCuestionarioController($conexion);
 
+    
     if ( isset($_GET['accion']) )
     {
         $accion = $_GET['accion'];
@@ -33,9 +38,22 @@
 
             case "asignarCuestionario":
                 $res = $usuariosController->obtenerUsuarios();
+                $cues = $CuesController->obtenerDatosCuestionarios();
                 require_once("./views/generar/AsignarCuestionarios.php");
                 break;
             
+            case "generarAsignacionUsuario":
+                if ( $_SERVER["REQUEST_METHOD"] === "POST" )
+                {
+                    $resultado = filtrarPorResponsableAsignacion($_POST);
+                    debuguear($resultado);
+
+                    $asignacionCuestionario = new AsignacionCuestionarioFinal("", "", "");
+                    $asignacionCuestionarioController->asignarCuestionarioUsuarios($asignacionCuestionario);
+                }
+
+                break;
+
             case "eliminarCuestionario":
                 if ( isset($_GET["id"]) )
                 {
@@ -47,6 +65,7 @@
                     header("Location: ?accion=opciones");
                 }
                 break;
+                
 
             case "actualizarFormulario":
                 
