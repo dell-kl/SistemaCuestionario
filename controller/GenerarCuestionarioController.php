@@ -12,6 +12,7 @@
 
         public function RegistrarCuestionario($id, $pregunta, array $respuestas, $r_correcto)
         {
+
             try {             
                 $resultado = $this->RegistrarPreguntaCues($pregunta, $id);
                 
@@ -23,14 +24,13 @@
     
                     if( $resultado )
                     {
-                        header("Location: ?accion=opciones");
+                        header("Location: ?accion=opciones&estado=exito");   
                         return;
                     } 
                 }
 
-                header("Location: ?accion=generarCuestionario");
+                header("Location: ?accion=opciones&estado=error");
             } catch (\Throwable $th) {
-                //throw $th;
                 return false;
             }
         }
@@ -82,11 +82,47 @@
             }
         }
 
-        public function RegsitrarRespuestaCues($id, array $res, $r_correcto)
+        public function RetornarUltimoRespuestaRegistrada()
+        {
+            $sql = "SELECT respuestasCues_id FROM RespuestasCues ORDER BY respuestasCues_id DESC LIMIT 1";
+            $cn = $this->conn->prepare($sql);
+            $cn->execute();
+            $id = $cn->fetch();
+            return $id["respuestasCues_id"];
+        }
+
+        public function RegistrarRespuestaCues(int $id, array $res, $r_correcto)
         {
             try {
                 //code...
-                $sql = "INSERT INTO RespuestasCues( respuestasCues_nombre, preguntasCues, respuestasCues_correcta)";
+                $sql = "INSERT INTO RespuestasCues(respuestasCues_nombre,preguntasCues,respuestasCues_correcta) VALUES(?, ?, ?)";
+                $cn = $this->conn->prepare($sql);
+                $cn->bindValue(1, array_values($res)[0]);
+                $cn->bindValue(2, $id);
+                
+                if ( array_keys($res)[0] === $r_correcto ) {                    
+                    $cn->bindValue(3, 1);
+                }
+                else 
+                {
+                    $cn->bindValue(3, 0);
+                }
+                $cn->execute();
+                
+                $resultado = $this->RetornarUltimoRespuestaRegistrada();
+
+                return $resultado;
+            } catch (\Throwable $th) {
+                //throw $th;
+                return false;
+            }
+        }
+
+        public function RegsitrarRespuestaCues(int $id, array $res, $r_correcto)
+        {
+            try {
+                //code...
+                $sql = "INSERT INTO RespuestasCues(respuestasCues_nombre,preguntasCues,respuestasCues_correcta)";
                 
                 $i = 0;
                 $valores = [];
@@ -111,24 +147,24 @@
                         $valores[] = $value;
                         $params[] = $v;
                         $params[] = $id;
-                        $params[] = 0;
-
-                        if ( $r === $r_correcto )
-                        {
-                            $params[2] = 1;
-                        }
+                        //con esto verificamos la respuesta que coincida con nuestra 
+                        //r_correcto para poder darle una  respusta correcta. 
+                        
+                        if ( preg_match("/^$r$/", $r_correcto) )
+                            $params[] = 1;
+                        else
+                            $params[] = 0;
                         
                     }
                 }
-                
+
                 $sql .= implode(",", $valores);
                 $consulta = $this->conn->prepare($sql);
-               
                 $consulta->execute($params);
-
+                $resultado = $consulta->fetchAll();
+                
                 return true;
             } catch (\Throwable $th) {
-                //throw $th;
                 return false;
             }
         }

@@ -8,5 +8,9 @@
             <div class="imagenCrearCuestionario"></div>
             <a href="?accion=generarCuestionario" class="text-decoration-none d-block text-white fw-bold ms-2">Crear Cuestionario</a>    
         </section>
+        <section class="d-flex align-items-center mt-4 m-s1">
+            <div class="imagenAsignarCuestionario"></div>
+            <a href="?accion=asignarCuestionario" class="text-decoration-none d-block text-white fw-bold ms-2">Asignar Cuestionario</a>    
+        </section>
     </div>
 </aside>

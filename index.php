@@ -5,11 +5,15 @@
     require_once("./controller/GenerarCuestionarioController.php");
     require_once("./controller/CuestionariosController.php");
     require_once("./controller/InicioSesionController.php");
+    require_once("./controller/UsuariosController.php");
+    require_once("./tools/toolsFunc.php");
+    require_once("./tools/gestionarCues.php");
 
     $formularioController = new FormularioController($conexion);
     $cuestionarioController = new GenerarCuestionarioController($conexion);
     $CuesController = new CuestionariosController($conexion);
     $loginController = new InicioSesionController($conexion);
+    $usuariosController = new UsuariosController($conexion);
 
     if ( isset($_GET['accion']) )
     {
@@ -27,6 +31,10 @@
                 $CuesController->obtenerTipoCuestionarios();
                 break;
 
+            case "asignarCuestionario":
+                $res = $usuariosController->obtenerUsuarios();
+                require_once("./views/generar/AsignarCuestionarios.php");
+                break;
             
             case "eliminarCuestionario":
                 if ( isset($_GET["id"]) )
@@ -44,58 +52,19 @@
                 
                 if (  $_SERVER["REQUEST_METHOD"] === "POST" )
                 {
-                    /*
-                    * hay varios a tomar en cuenta por ejemplo, de que el usuario haya eliminado algunas respuestas que ya no desea... en ese caso
-                    * tendremos que verificar por esa respuesta eliminada.
-
-                    * Tambien tenemos la otra opcion de que se hayan incluido unas nuevas preguntas y respuestas a nuestro cuestionario.
-                    * Asi que eso debemos tambien ver la manera de como podemos capturar para poder procesarlos correctamente.
-                    */
-                    $indicePreguntaCuestionario = 0;
-                    array_filter($_POST, function($value,$key) {
-                        global $indicePreguntaCuestionario;
-                        if ( preg_match("/^preguntaCuestionario/", $key) )
-                        {
-                            $indicePreguntaCuestionario = intval($value);
-                        }
-                    },ARRAY_FILTER_USE_BOTH);
+                    //formatear nuestro $_POST para generar matrices anidadas.
+                    $posicionPreguntas = filtrarPosicionesPreguntas($_POST);
                     
-                    //vamos a traernos los id de las respuestas en base al id de la pregunta...
-                    $registroIndices = $CuesController->obtenerIdRespuestas($indicePreguntaCuestionario);
-                   
-                    //despues tenemos que hacer una verificacion de cual dato ya no se encuentra para poder hacer la eliminacion.
-                    $listadoNIndicesRespuestas = [];
-                    array_filter($_POST, function($value,$key) { 
-                        global $listadoNIndicesRespuestas;
-
-                        if ( preg_match("/^respuestasCuestionario_/", $key) )
-                        {
-                            $listadoNIndicesRespuestas[] = intval($value);
-                        }
-                    }, ARRAY_FILTER_USE_BOTH);
-  
-                    echo "<pre>";
-                    var_dump($_POST);
-                    var_dump($listadoNIndicesRespuestas);
-                    echo "</pre>";
-
-                    //esta lista corresponde a las respuestas que fueron eliminadas en la parte de la interfaz... ahora lo que tenemos que hacer
-                    //es una eliminacion completa en la base de datos de dicha respuestas....
-                    $respuesta = array_diff($registroIndices, $listadoNIndicesRespuestas);
+                    //retornando nueva lista de valores con los datos....
+                    $nuevolistado = nuevaListaDatosCuestionario($posicionPreguntas, $_POST); 
                     
-                    if ( !empty($respuesta) )
-                    {
-                        foreach($respuesta as $v)
-                        {
-                            $respuestaEliminacion = $CuesController->eliminarRespuesta($v);
-    
-                            if ( !$respuestaEliminacion )
-                                break;
-                        }
+                    //verificar por cada pregunta matriz si se encuentra una nueva respuesta a la pregunta. 
+                    filtrarPorRespuestasNuevasPreguntas($nuevolistado);
 
-                    }    
-
-                    // header("Location: ?accion=opciones");
+                    //Este metodo de aqui se va a encargar mas bien de registrar si exsite una nueva pregunta con respuestas .... 
+                    verificarPreguntasRespuestasNuevas($_POST);
+            
+                    header("Location: ?accion=opciones");
                 }
 
                 break;
@@ -104,43 +73,21 @@
                 
                 if (  $_SERVER["REQUEST_METHOD"] === "POST" )
                 {
-                 
                     //buscamos por medio de expresion regular
-                    $listadoNuevo = array_filter($_POST, function($key, $valor) {
-              
-                        if( preg_match("/^pregunta_[0-9]{1,1}$/", $valor) )
-                        {
-                            return $key;
-                        }
-                    }, ARRAY_FILTER_USE_BOTH);
+                    $listadoNuevo = filtrarPorPregunta($_POST); 
 
                     //registramos solo por una vez a nuestro tema del cuestionario....
                     $cuestionarioController->RegistrarTema($_POST["NTemaCuestionario"]);
+                    
                     $idTema = $cuestionarioController->ObtenerUltimoIdTema();
-
+                    
                     foreach($listadoNuevo as $keyp=>$valorp)
                     {
-                        $listadoRespuestas = array_filter($_POST, function($valor, $key) {
-                            global $keyp;
+                        global $keyp;
 
-                            if ( preg_match("/^$keyp(_respuesta)/", $key) )
-                            {
-                                return $valor;
-                            }
-                        },ARRAY_FILTER_USE_BOTH);
-
-
-                        $r_correcto = null;                        
-                        array_filter($listadoRespuestas, function($key, $valor) {
-                            global $r_correcto;
-                            if( preg_match("/_correcta$/", $valor) )
-                            {
-                                $keyRespuestaON = explode("_correcta", $valor)[0];
-                                $r_correcto = $keyRespuestaON;
-                            
-                            }
-                        }, ARRAY_FILTER_USE_BOTH);
-
+                        $listadoRespuestas = filtrarPorRespuestaCaracter($_POST, $keyp);
+                        $r_correcto = filtrarPorRespuestaCorrectaCaracter($listadoRespuestas);
+                           
                         //con este codigo vamos a registrar en la base de datos las respuestas y las preguntas...
                         $cuestionarioController->RegistrarCuestionario($idTema, $valorp, $listadoRespuestas, $r_correcto);
                     }
@@ -154,6 +101,7 @@
                 break;
 
             case "generarCuestionario":
+
                 require_once("./views/generar/CrearCuestionario.php");
                 break;
 

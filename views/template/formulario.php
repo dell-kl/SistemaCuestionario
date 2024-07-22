@@ -1,6 +1,12 @@
 <?php
     if ( isset($_GET["id"]) )
     { ?>
+        <style>
+            .modal {
+                background-color: rgba( 0 0 0 / .5);   
+            }
+        </style>
+
         <div class="modal" tabindex="-1" style="display:block;" data-bs-backdrop="static">
             <div class="modal-dialog" style="max-width: 750px;">
                 <div class="modal-content">
@@ -21,9 +27,12 @@
                         <form class="form" method="POST" action="?accion=actualizarFormulario">
                             <div class="proceso_form p-0">
                                 <div class="formulario w-100 m-0">                        
-<?php foreach( $dataCuestionarios->preguntasCues as $key => $value ) { 
+<?php 
+    
+    foreach( $dataCuestionarios->preguntasCues as $key => $value ) { 
     $indicePregunta = md5($value->preguntasCues_id*15);
     $indice = $value->preguntasCues_id; ?>
+                                    <input type="hidden" name="tipoCuestionarioId" value="<?php echo $_GET["id"]; ?>"/>
                                     <input type="hidden" name="preguntaCuestionario_<?php echo $indicePregunta; ?>" value="<?php echo $indice; ?>"/>
                                     <div class="pregunta_seccion mb-4">
                                         
@@ -76,7 +85,7 @@
                                             </div>
                                         </div>
                                     </div>
-<?php } ?>
+<?php  } ?>
                                 </div>
                             </div>
                             <input type="submit" id="btn-formularioFinal" value="Enviar Datos Formulario" style="display:none;"/>

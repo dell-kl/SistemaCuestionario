@@ -50,6 +50,15 @@ header
             width: 40px;
             height: 40px;
         }
+
+        .imagenAsignarCuestionario
+        {
+            background-image: url('./../image/asignacion.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 40px;
+            height: 40px;
+        }
     }
     
     .proceso {
