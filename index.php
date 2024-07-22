@@ -45,11 +45,17 @@
             case "generarAsignacionUsuario":
                 if ( $_SERVER["REQUEST_METHOD"] === "POST" )
                 {
-                    $resultado = filtrarPorResponsableAsignacion($_POST);
+                    $resultado = array_values( filtrarPorResponsableAsignacion($_POST) );
+                    $asignacionCuestionario = new AsignacionCuestionarioFinal(0, $resultado[0], $resultado[1]);
+                    $resultado = $asignacionCuestionarioController->asignarCuestionarioUsuarios($asignacionCuestionario);
+                
                     debuguear($resultado);
-
-                    $asignacionCuestionario = new AsignacionCuestionarioFinal("", "", "");
-                    $asignacionCuestionarioController->asignarCuestionarioUsuarios($asignacionCuestionario);
+                    // if ( $resultado )
+                    // {
+                    //     header("Location: ?accion=asignarCuestionario&asignacion=exitoso");
+                    //     return;
+                    // }
+                    // header("Location: ?accion=asignarCuestionario&asignacion=error");
                 }
 
                 break;
