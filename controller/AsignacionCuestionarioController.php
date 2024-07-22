@@ -24,7 +24,7 @@
                 return true;
             } catch (\Throwable $th) {
                 //throw $th;
-                debuguear($th);
+              
                 return false;
             }
 

@@ -49,13 +49,12 @@
                     $asignacionCuestionario = new AsignacionCuestionarioFinal(0, $resultado[0], $resultado[1]);
                     $resultado = $asignacionCuestionarioController->asignarCuestionarioUsuarios($asignacionCuestionario);
                 
-                    debuguear($resultado);
-                    // if ( $resultado )
-                    // {
-                    //     header("Location: ?accion=asignarCuestionario&asignacion=exitoso");
-                    //     return;
-                    // }
-                    // header("Location: ?accion=asignarCuestionario&asignacion=error");
+                    if ( $resultado )
+                    {
+                        header("Location: ?accion=asignarCuestionario&asignacion=exitoso");
+                        return;
+                    }
+                    header("Location: ?accion=asignarCuestionario&asignacion=error");
                 }
 
                 break;
